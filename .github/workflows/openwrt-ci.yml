@@ -1,64 +1,64 @@
 # 
-# <https://github.com/KFERMercer/OpenWrt-CI>
+#《https://github.com/KFERMercer/OpenWrt-CI》
 #
-# Copyright (C) 2019 P3TERX
+#版权所有2019年第三季度
 #
-# Copyright (C) 2020 KFERMercer
+#版权所有2020年KFERMercer
 #
-name: OpenWrt-CI
+名字: OpenWrt-CI
 
-on:
-  schedule:
-    - cron: 0 20 * * *
+在:
+日程安排:
+    - 时间单位: 0 20 * * *
 
-permissions:
-  contents: read
+   释放；排放；发布:
+类型: [出版]
 
-jobs:
+工作:
 
-  build_openwrt:
+build_openwrt:
 
-    name: Build OpenWrt Firmware
+名字: 构建OpenWrt固件
 
-    runs-on: ubuntu-latest
+连续运行: Ubuntu-最新版
 
-    steps:
-      - name: Space cleanup and Initialization environment
-        env:
-          DEBIAN_FRONTEND: noninteractive
-        run: |
-          docker rmi `docker images -q`
-          sudo -E rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d /usr/local/lib/android
-          sudo -E apt-mark hold grub-efi-amd64-signed
-          sudo -E apt update
-          sudo -E apt -y purge azure-cli* docker* ghc* zulu* llvm* firefox google* dotnet* powershell* openjdk* mysql* php* mongodb* dotnet* snap*
-          sudo -E apt -y full-upgrade
-          sudo -E apt -y install ack antlr3 aria2 asciidoc autoconf automake autopoint binutils bison build-essential bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gettext gcc-multilib g++-multilib git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-dev libtool lrzsz mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python3 python3-pip libpython3-dev qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
-          sudo -E systemctl daemon-reload
-          sudo -E apt -y autoremove --purge
-          sudo -E apt clean
-          sudo -E timedatectl set-timezone "Asia/Shanghai"
+步伐:
+      - 名字: 空间清理和初始化环境
+包封/包围（动词包围的简写):
+DEBIAN_FRONTEND: 非交互的
+奔跑: |
+码头工人图像问
+sudo-E RM-RF/usr/share/dot net/etc/MySQL/etc/PHP/etc/apt/sources。列表。d/usr/本地/lib/Android
+sudo-E apt-mark hold gr B- EFI-amd64-已签名
+sudo -E apt更新
+sudo-E apt-y purge azure-CLI * docker * ghc * Zulu * llvm * Firefox Google * dot net * powershell * open JDK * MySQL * PHP * MongoDB * dot net * snap *
+sudo -E apt -y全面升级
+sudo-E apt-y install ack antlr 3 aria 2 asciidoc autoconf automake autopoint binutils bison build-essential bzip2 ccache cmake cpio curl device-tree-compiler fast jar flex gawk gettext gcc-multi lib g++-multi lib git gperf have ged help 2 man intl tool libc 6-dev-i386 libelf-dev libglib 2.0-dev lib GMP 3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses 5-dev lib
+sudo -E系统守护程序-重新加载
+sudo -E apt -y自动移除-清除
+苏多伊易于清洁
+须藤街时间日期设置-时区"亚洲/上海"
 
-      - name: Checkout OpenWrt
-        uses: actions/checkout@v3
+      - 名字: 检出OpenWrt
+使用: 动作/签出@v3
 
-      - name: Update feeds
-        run: |
-          sed -i 's/#src-git helloworld/src-git helloworld/g' ./feeds.conf.default
-          ./scripts/feeds update -a
-          ./scripts/feeds install -a
+      - 名字: 更新订阅源
+奔跑: |
+sed-I‘s/# src-git hello world/src-git hello world/g。/feeds.conf.default
+。/脚本/源更新［构成动植物的古名或拉丁化的现代名］
+。/脚本/提要安装［构成动植物的古名或拉丁化的现代名］
 
-      - name: Generate configuration file
-        run: make defconfig
+      - 名字: 生成配置文件
+奔跑: 进行定义配置
 
-      - name: Download packages
-        run: make download -j16
+      - 名字: 下载软件包
+奔跑: 制作下载-j16
 
-      - name: Compile firmware
-        run: |
-          make -j$(nproc) || make -j1 V=s
-          echo "======================="
-          echo "Space usage:"
+      - 名字: 编译固件
+奔跑: |
+make-j $（nproc）| | make-J1 V = s
+echo“= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =“
+回显"空间使用情况:"
           echo "======================="
           df -h
           echo "======================="
